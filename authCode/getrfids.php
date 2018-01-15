@@ -4,10 +4,19 @@ ini_set('display_errors', true);
 
 require(".codez.inc");
 
+// Something in the certs for ssl.acemonstertoys.org and new OpenSSL/PHP is unhappy
+// OpenSSL works find with helloworld.letsencrypt.org, the same cert chain, though...
+$legacySSLStreamContext = stream_context_create([
+  'ssl' => [
+      'verify_peer'      => false,
+      'verify_peer_name' => false
+  ]
+]);
+
 $time=time();
 $hash = sha1(sha1($time).sha1($secret));
 
-$out = json_decode(file_get_contents("$url?ts=$time&hs=$hash"));
+$out = json_decode(file_get_contents("$url?ts=$time&hs=$hash", false, $legacySSLStreamContext));
 
 //print_r($out);
 

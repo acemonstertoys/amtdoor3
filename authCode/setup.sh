@@ -7,6 +7,8 @@ else
   exit -1
 fi
 
+# also need to install git, vim, php
+
 chmod 755 doortestd
 sudo cp ./doortestd /etc/init.d/doortestd
 sudo update-rc.d doortestd defaults
